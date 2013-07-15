@@ -6,15 +6,21 @@
     <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
     <script src="binding-fadevisible.js"></script>
     <script src="binding-jsondump.js"></script>
+    <script src="binding-slide.js"></script>
 </head>
 <body>
     <button data-bind="click: buttonClick">Fadein/Out</button>
     <p data-bind="fadeVisible: show">This is the text</p>
+
+    <button data-bind="click: slideClick">Slide Up/Down</button>
+    <p data-bind="slideIn: slide">Sliding in!</p>
     <div data-bind="dump: $data"></div>
     <script type="text/javascript">
         var viewModel = {
             show: ko.observable(false),
-            buttonClick: function () { if (this.show()) { this.show(false); } else { this.show(true); };}
+            buttonClick: function () { if (this.show()) { this.show(false); } else { this.show(true); }; },
+            slide: ko.observable(false),
+            slideClick: function () { if (this.slide()) { this.slide(false); } else { this.slide(true); } }
         };
         ko.applyBindings(viewModel);
     </script>
