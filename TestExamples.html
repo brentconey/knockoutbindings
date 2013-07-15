@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
+    <script src="binding-fadevisible.js"></script>
+    <script src="binding-jsondump.js"></script>
+</head>
+<body>
+    <button data-bind="click: buttonClick">Fadein/Out</button>
+    <p data-bind="fadeVisible: show">This is the text</p>
+    <div data-bind="dump: $data"></div>
+    <script type="text/javascript">
+        var viewModel = {
+            show: ko.observable(false),
+            buttonClick: function () { if (this.show()) { this.show(false); } else { this.show(true); };}
+        };
+        ko.applyBindings(viewModel);
+    </script>
+</body>
+</html>
