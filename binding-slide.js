@@ -1,4 +1,4 @@
-﻿ko.bindingHandlers.slideIn = {
+﻿ko.bindingHandlers.slideVisible = {
     init: function (element, valueAccessor) {
         $(element).toggle(ko.utils.unwrapObservable(valueAccessor()));
     },
