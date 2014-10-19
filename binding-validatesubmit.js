@@ -4,14 +4,15 @@ ko.bindingHandlers.validateSubmit = {
         if (typeof valueAccessor() != 'function') {
             throw new Error('The value for a validate submit binding must be a function');
         }
-        
+
         var $form = $(element);
         //disable default behavior
         $form.attr('novalidate', '');
         $form.on('submit', function (e) {
             e.preventDefault();
             var validationErrorCount = 0;
-            var $allInputs = $form.children('input, textarea, select').not(':input[type=submit], :input[type=button], :input[type=reset]');
+            var deferredValidationCalls = [];
+            var $allInputs = $form.find('input, textarea, select').not(':input[type=submit], :input[type=button], :input[type=reset]');
             $allInputs.removeClass('error');
             for (var i = 0; i <= ($allInputs.length - 1) ; i++) {
                 var $input = $($allInputs[i]);
@@ -45,20 +46,28 @@ ko.bindingHandlers.validateSubmit = {
 
                 var customValidator = $input.data('customvalidation');
                 if (customValidator) {
-                    var valid = bindingContext['$data'][customValidator]($allInputs[i]);
-                    if (!valid) {
-                        validationErrorCount++;
-                        if (!$input.hasClass('error')) {
-                            $input.addClass('error');
-                        }
+                    var validate = bindingContext['$data'][customValidator]($input.val());
+                    if (validate.promise) {
+                        deferredValidationCalls.push(validate);
                     }
+                    $.when(validate).done(function (response) {
+                        if (!response.valid) {
+                            validationErrorCount++;
+                            if (!$input.hasClass('error')) {
+                                $input.addClass('error');
+                            }
+                        }
+                    });
                 }
 
             }
-            var viewModelFunction = valueAccessor();
-            if (validationErrorCount === 0) {
-                viewModelFunction.call(bindingContext['$data'], element);
-            }
+            $.when.apply(null, deferredValidationCalls).done(function (response) {
+                var viewModelFunction = valueAccessor();
+                if (validationErrorCount === 0) {
+                    viewModelFunction.call(bindingContext['$data'], element);
+                }
+            });
+
         });
     }
 };
