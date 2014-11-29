@@ -43,19 +43,13 @@ ko.bindingHandlers.validateSubmit = {
                         }
                     }
                 }
-
                 var customValidator = $input.data('customvalidation');
                 if (customValidator) {
-                    var validate = bindingContext['$data'][customValidator]($input.val());
-                    if (validate.promise) {
-                        deferredValidationCalls.push(validate);
-                    }
+                    var validate = bindingContext['$data'][customValidator]($input);
+                    deferredValidationCalls.push(validate);
                     $.when(validate).done(function (response) {
                         if (!response.valid) {
                             validationErrorCount++;
-                            if (!$input.hasClass('error')) {
-                                $input.addClass('error');
-                            }
                         }
                     });
                 }
