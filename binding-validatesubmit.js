@@ -1,10 +1,9 @@
-﻿//Binding by Brent Coney, 2014
+﻿//Binding by Brent Coney, 2015
 ko.bindingHandlers.validateSubmit = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
         if (typeof valueAccessor() != 'function') {
             throw new Error('The value for a validate submit binding must be a function');
         }
-
         var $form = $(element);
         //disable default behavior
         $form.attr('novalidate', '');
@@ -23,7 +22,6 @@ ko.bindingHandlers.validateSubmit = {
                         $input.addClass('error');
                     }
                 }
-
                 if (typeof $input.attr('min') !== typeof undefined) {
                     //input has min field
                     if ($input.val().length < $input.attr('min')) {
@@ -33,7 +31,6 @@ ko.bindingHandlers.validateSubmit = {
                         }
                     }
                 }
-
                 if (typeof $input.attr('max') !== typeof undefined) {
                     //input has max field
                     if ($input.val().length > $input.attr('max')) {
@@ -53,7 +50,6 @@ ko.bindingHandlers.validateSubmit = {
                         }
                     });
                 }
-
             }
             $.when.apply(null, deferredValidationCalls).done(function (response) {
                 var viewModelFunction = valueAccessor();
@@ -61,7 +57,6 @@ ko.bindingHandlers.validateSubmit = {
                     viewModelFunction.call(bindingContext['$data'], element);
                 }
             });
-
         });
     }
 };

@@ -1,13 +1,11 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
     <title></title>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
-    <script src="binding-fadevisible.js"></script>
-    <script src="binding-jsondump.js"></script>
-    <script src="binding-slide.js"></script>
+
 </head>
+
 <body>
     <button data-bind="click: buttonClick">Fadein/Out</button>
     <p data-bind="fadeVisible: show">This is the text</p>
@@ -15,14 +13,36 @@
     <button data-bind="click: slideClick">Slide Up/Down</button>
     <p data-bind="slideVisible: slide">Sliding in!</p>
     <div data-bind="dump: $data"></div>
+
+    <div class="content-editable">
+        <div class="member__info">
+            <h2>Content Editable section</h2>
+            <span class="member__name" data-bind="inlineEdit: memberName" contenteditable="true"></span>
+            <span class="member__email" data-bind="inlineEdit: memberEmail" contenteditable="true"></span>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.3.0.js"></script>
+    <script src="binding-fadevisible.js"></script>
+    <script src="binding-jsondump.js"></script>
+    <script src="binding-slide.js"></script>
+    <script src="binding-inlineedit.js"></script>
+
+
     <script type="text/javascript">
         var viewModel = {
             show: ko.observable(false),
             buttonClick: function () { if (this.show()) { this.show(false); } else { this.show(true); }; },
             slide: ko.observable(false),
-            slideClick: function () { if (this.slide()) { this.slide(false); } else { this.slide(true); } }
+            slideClick: function () { if (this.slide()) { this.slide(false); } else { this.slide(true); } },
+            memberName: ko.observable('brent'),
+            memberEmail: ko.observable('slinky@toys.com')
         };
-        ko.applyBindings(viewModel);
+        $(function(){
+            ko.applyBindings(viewModel);
+        });
     </script>
 </body>
+
 </html>
