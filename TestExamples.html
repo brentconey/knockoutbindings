@@ -15,10 +15,11 @@
     <div data-bind="dump: $data"></div>
 
     <div class="content-editable">
+        <h2>Content Editable section</h2>
+        <button data-bind="click: toggleEditable" style="display:block; margin-bottom:10px;">Toggle Editable</button>
         <div class="member__info">
-            <h2>Content Editable section</h2>
-            <span class="member__name" data-bind="inlineEdit: memberName" contenteditable="true"></span>
-            <span class="member__email" data-bind="inlineEdit: memberEmail" contenteditable="true"></span>
+            <span class="member__name" data-bind="inlineEdit: memberName, isEditable: canEdit"></span>
+            <span class="member__email" data-bind="inlineEdit: memberEmail, isEditable: canEdit"></span>
         </div>
     </div>
 
@@ -28,6 +29,7 @@
     <script src="binding-jsondump.js"></script>
     <script src="binding-slide.js"></script>
     <script src="binding-inlineedit.js"></script>
+    <script src="binding-iseditable.js"></script>
 
 
     <script type="text/javascript">
@@ -37,7 +39,9 @@
             slide: ko.observable(false),
             slideClick: function () { if (this.slide()) { this.slide(false); } else { this.slide(true); } },
             memberName: ko.observable('brent'),
-            memberEmail: ko.observable('slinky@toys.com')
+            memberEmail: ko.observable('slinky@toys.com'),
+            canEdit: ko.observable(false),
+            toggleEditable: function() { if(this.canEdit()){ this.canEdit(false); } else { this.canEdit(true); } }
         };
         $(function(){
             ko.applyBindings(viewModel);
